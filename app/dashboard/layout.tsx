@@ -4,11 +4,15 @@ import { ReactNode } from "react";
 import Logo from "@/public/logo.png"
 import { DashboardLinks } from "../components/DashboardLinks";
 import { Menu, Sheet } from "lucide-react";
-import { SheetTrigger } from "@/components/ui/sheet";
+import { SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {  signOut } from "../lib/auth";
+import { requrieUser } from "../lib/hooks";
 
-export default function DashboardLayout({children}: {children:ReactNode}) {
-    
+export default async function DashboardLayout({children, }: {children:ReactNode}) {
+    const session = await requrieUser();
     return (
         // <div>
         //     <h1>Dashboard Layout</h1>
@@ -39,8 +43,48 @@ export default function DashboardLayout({children}: {children:ReactNode}) {
                                     <Menu className="size-5" />
                                 </Button>
                             </SheetTrigger>
+                            <SheetContent side="left" className="flex flex-col ">
+                                <nav className="grid gap-2 mt-10">
+                                    <DashboardLinks />
+                                </nav>
+                            </SheetContent>
                         </Sheet>
+                        <div className="ml-auto flex items-center gap-x-4">
+                            <ThemeToggle />
+                            <DropdownMenu >
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="secondary" size="icon" className="rounded-full">
+                                        <Image 
+                                            src={session?.user?.image as string} 
+                                            alt="profile Image" 
+                                            width={20} height={20} 
+                                            className="w-full  h-full rounded-full"    
+                                        />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" >
+                                    <DropdownMenuLabel>
+                                        My Account 
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/dashboard/settings">Settings</Link> 
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <form className="w-full" action={async () => {
+                                            "use server"
+                                            await signOut();
+                                        }}>
+                                            <button className="w-full text-left">Log Out</button>
+                                        </form>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </header>
+                    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 ">
+                        {children}
+                    </main>
                 </div>
 
             </div>
