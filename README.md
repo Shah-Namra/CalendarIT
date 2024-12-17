@@ -1,12 +1,18 @@
 # CalendarIT
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Scheduling Platform
+Where you book meetings,
+integrating calendars
+Custom Auth, username validation,
+realtime calendar, 
+and many more 
+
+With this project, I will be learning Postgres and Prisma closely 
 
 ## Getting Started
 
 First, run the development server:
-
-```bash
+bash
 npm run dev
 # or
 yarn dev
