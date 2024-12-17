@@ -10,16 +10,9 @@ and many more
 With this project, I will be learning Postgres and Prisma closely 
 
 ## Getting Started
-
 First, run the development server:
 bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 
 ### Commit 1
 - Project setup
