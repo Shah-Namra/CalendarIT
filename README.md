@@ -26,3 +26,6 @@ npm run dev
 
 ### Commit 3 
 - Routes and userName, fullName
+
+### Commit 4
+- Nylas setup and Auth
