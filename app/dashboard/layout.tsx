@@ -20,10 +20,15 @@ async function getData(userId: string ){
         },
         select:{
             userName: true,
+            grantId: true,   
         }
     })
     if(!data?.userName){
-        return redirect('/dashboard/onboarding');
+        return redirect('/onboarding');
+    }
+
+    if(!data.grantId){  
+        return redirect('/onboarding/grant-id');
     }
 }
 

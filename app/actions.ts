@@ -39,6 +39,6 @@ export async function OnboardingAction(_prevState: unknown, formData: FormData){
             name: submission.value.fullName,
         }
     });
-    return redirect('/dashboard');
+    return redirect('/onboarding/grant-id');
 // type safe how??
 }
