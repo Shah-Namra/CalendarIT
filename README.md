@@ -23,3 +23,6 @@ npm run dev
 - Dashboard completion
 - Onboarding route initial work
 - Username and name implementation
+
+### Commit 3 
+- Routes and userName, fullName
