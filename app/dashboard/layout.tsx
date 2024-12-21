@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import {  signOut } from "../lib/auth";
-import { requrieUser } from "../lib/hooks";
+import { requireUser } from "../lib/hooks";
 import prisma from "../lib/db";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
+import { Toaster } from "@/components/ui/sonner";
 
 async function getData(userId: string ){
     const data = await prisma.user.findUnique({
@@ -33,15 +34,12 @@ async function getData(userId: string ){
 }
 
 export default async function DashboardLayout({children, }: {children:ReactNode}) {
-    const session = await requrieUser();
+    const session = await requireUser();
    
     const data = await getData(session.user?.id as string);
    
     return (
-        // <div>
-        //     <h1>Dashboard Layout</h1>
-        //     {children}
-        // </div>
+       
         <>
             <div className="min-h-screen w-full grid md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
                 <div className="hidden md:block border-r bg-muted/40 ">
@@ -112,7 +110,7 @@ export default async function DashboardLayout({children, }: {children:ReactNode}
                 </div>
 
             </div>
-        
+            <Toaster richColors closeButton />
         </>
     ); 
 

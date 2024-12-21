@@ -29,3 +29,7 @@ npm run dev
 
 ### Commit 4
 - Nylas setup and Auth
+
+### Commit 5
+- Added security route 
+- added profile image using Uploadthing 
