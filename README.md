@@ -33,3 +33,8 @@ npm run dev
 ### Commit 5
 - Added security route 
 - added profile image using Uploadthing 
+
+### Commit 6
+- Added Availability Route for 7 days and 24hrs 
+- used `revalidatePath()` for caching 
+- updated Event Types if there is no available meetings and can add add event 
