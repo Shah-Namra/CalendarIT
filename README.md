@@ -43,3 +43,6 @@ npm run dev
 - Added new appointment section
 - Crearted a form for submmision and integrated with DB
 - Added few UI componnets in the page
+
+### Commit 8
+- implemented event card UI with dropdown actions
