@@ -46,3 +46,14 @@ npm run dev
 
 ### Commit 8
 - implemented event card UI with dropdown actions
+
+### Comomit 9
+- Calendar Booking Layout
+- Will be creating 3 column grid with seprator
+- user info , calendar and time solts 
+
+#### 9.1
+- create user details column for booking page
+- It will display user image, event title, description
+- Also display meeting details (date, duration, video platform)
+- Implemented dynamic route [username]/[eventUrl]
