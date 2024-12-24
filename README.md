@@ -38,3 +38,8 @@ npm run dev
 - Added Availability Route for 7 days and 24hrs 
 - used `revalidatePath()` for caching 
 - updated Event Types if there is no available meetings and can add add event 
+
+### Commit 7
+- Added new appointment section
+- Crearted a form for submmision and integrated with DB
+- Added few UI componnets in the page
