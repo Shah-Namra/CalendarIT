@@ -11,16 +11,17 @@ export const onBoardingSchema = z.object({
 
 }) 
 
-export function onBoardingSchemaValidation(options?: {
-    isUseNameUnique: () => Promise<boolean>
-}){
+export function onboardingSchemaValidation(options?: {
+    isUsernameUnique?: () => Promise<boolean>  // Make this optional
+  }) {
+  
     return z.object({
         userName: z.string().min(3).max(150).regex(/^[a-zA-Z0-9-]+$/, {
             message: 'Username can only contain letters, numbers, and hyphens'
         })
         .pipe(
             z.string().superRefine((_, ctx) =>{
-                if(typeof options.isUseNameUnique !== 'function'){
+                if(typeof options.isUsernameUnique !== 'function'){
                     ctx.addIssue({
                         code: "custom",
                         message: conformZodMessage.VALIDATION_UNDEFINED,
@@ -29,7 +30,7 @@ export function onBoardingSchemaValidation(options?: {
                     return;
                 }
 
-                return options.isUseNameUnique().then((isUnique) =>{
+                return options.isUsernameUnique().then((isUnique) =>{
                     if(!isUnique){
                         ctx.addIssue({
                             code: "custom",

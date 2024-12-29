@@ -1,39 +1,71 @@
-import { NextRequest } from "next/server";
+import prisma from "@/app/lib/db";
 import { requireUser } from "@/app/lib/hooks";
 import { nylas, nylasConfig } from "@/app/lib/nylas";
-import prisma from "@/app/lib/db";
-import { redirect } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server"; // Add NextResponse import
 
-export async function GET(req: NextRequest){
-    const  session = await requireUser();
+const redirectUri = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3000/api/oauth/exchange'
+  : nylasConfig.redirectUri;
+
+export async function GET(req: NextRequest) {
+  try {
+    const session = await requireUser();
+    if (!session.user?.id) {
+      return Response.json("User session not found", { status: 401 });
+    }
+
     const url = new URL(req.url);
     const code = url.searchParams.get("code");
-    
+
     if (!code) {
-        return   Response.json('No authorization code returned from Nylas',{
-            status: 400,
-        });
-        
+      return Response.json("Authorization code not found", { status: 400 });
     }
+
     try {
-        const response = await nylas.auth.exchangeCodeForToken({ 
-          clientSecret: nylasConfig.apiKey,
-          clientId: nylasConfig.clientId,
-          code: code,
-          redirectUri: nylasConfig.redirectUri,
-        });
-        const {grantId, email} = response; 
-        await prisma.user.update({
-            where:{
-                id: session.user?.id,
-            },
-            data:{
-                grantId: grantId,
-                grantEmail: email,   
-            }
-        })
-    }catch (error) {
-        console.error('Error exchanging code for token:', error)
+      const response = await nylas.auth.exchangeCodeForToken({
+        clientSecret: nylasConfig.apiKey,
+        clientId: nylasConfig.clientId,
+        redirectUri: redirectUri,
+        code: code,
+      });
+
+      if (!response || !response.grantId || !response.email) {
+        throw new Error("Invalid response from Nylas");
       }
-      redirect('/dashboard');
+
+      const { grantId, email } = response;
+
+      await prisma.user.update({
+        where: {
+          id: session.user.id,
+        },
+        data: {
+          grantId: grantId,
+          grantEmail: email,
+        },
+      });
+
+      // Replace redirect with NextResponse.redirect
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    } catch (error) {
+      console.error("Nylas token exchange error:", error);
+      // Add more detailed error logging
+      if (error instanceof Error) {
+        console.error("Error details:", error.message);
+      }
+      return Response.json(
+        "Failed to exchange authorization code", 
+        { status: 500 }
+      );
+    }
+  } catch (error) {
+    console.error("OAuth exchange error:", error);
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+    }
+    return Response.json(
+      "An error occurred during authentication", 
+      { status: 500 }
+    );
+  }
 }

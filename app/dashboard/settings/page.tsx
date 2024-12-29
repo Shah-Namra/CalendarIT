@@ -1,4 +1,5 @@
 import { SettingsForm } from "@/app/components/SettingsForm";
+import prisma from "@/app/lib/db";
 import { requireUser } from "@/app/lib/hooks";
 import { notFound } from "next/navigation";
 

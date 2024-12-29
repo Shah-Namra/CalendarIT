@@ -1,4 +1,4 @@
-# CalendarIT
+# ScheduleIT
 
 Scheduling Platform
 Where you book meetings,
